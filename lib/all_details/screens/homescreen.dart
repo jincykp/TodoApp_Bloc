@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp_bloc/all_details/bloc_part/todo/bloc/todo_bloc.dart';
 import 'package:todoapp_bloc/all_details/screens/addscreen.dart';
+import 'package:todoapp_bloc/all_details/screens/editscreen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,8 +12,8 @@ class HomeScreen extends StatelessWidget {
     context.read<TodoBloc>().add(FetchTodoEvent());
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 65, 44, 82),
-        foregroundColor: Colors.white,
+        //  backgroundColor: const Color.fromARGB(255, 65, 44, 82),
+        //   foregroundColor: Colors.white,
         title: const Center(
             child: Text(
           "TASK LIST",
@@ -23,7 +24,7 @@ class HomeScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is TodoError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+              const SnackBar(content: Text('updated successfully')),
             );
           }
         },
@@ -34,16 +35,45 @@ class HomeScreen extends StatelessWidget {
             );
           } else if (state is TodoSuccess) {
             return Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: ListView.builder(
                 itemCount: state.items.length,
                 itemBuilder: (context, index) {
                   final task = state.items[index];
                   return Card(
-                    // color: Color.fromARGB(255, 126, 90, 131),
+                    color: Colors.black,
                     child: ListTile(
+                      leading: CircleAvatar(child: Text("${index + 1}")),
                       title: Text(task['title']),
                       subtitle: Text(task['description']),
+                      trailing: PopupMenuButton<String>(
+                        // onSelected: (value) {
+                        //   if (value == 'edit') {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => EditScreen(
+                        //                   id: task['_id'],
+                        //                 ))).then((_) {
+                        //       context.read<TodoBloc>().add(FetchTodoEvent());
+                        //     });
+                        //   } else if (value == 'delete') {
+                        //     context
+                        //         .read<TodoBloc>()
+                        //         .add(const DeleteTodoEvent(task['_id']));
+                        //   }
+                        // },
+                        itemBuilder: (context) {
+                          return [
+                            const PopupMenuItem(
+                              value: 'edit',
+                              child: Text("Edit"),
+                            ),
+                            const PopupMenuItem(
+                                value: 'delete', child: Text('Delete'))
+                          ];
+                        },
+                      ),
                     ),
                   );
                 },
@@ -63,6 +93,7 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const AddScreen()));
+            context.read<TodoBloc>().add(FetchTodoEvent());
           },
           label: const Icon(Icons.add_task)),
     );

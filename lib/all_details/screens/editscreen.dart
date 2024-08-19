@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp_bloc/all_details/bloc_part/todo/bloc/todo_bloc.dart';
 import 'package:todoapp_bloc/all_details/widgets/custom_textformfleds.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddScreen extends StatefulWidget {
-  const AddScreen({super.key});
-
-  @override
-  State<AddScreen> createState() => _AddScreenState();
-}
-
-class _AddScreenState extends State<AddScreen> {
+class EditScreen extends StatelessWidget {
+  final String id;
+  EditScreen({super.key, required this.id});
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final formKey = GlobalKey<FormState>();

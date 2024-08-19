@@ -16,3 +16,10 @@ class AddTaskEvent extends TodoEvent {
 }
 
 class FetchTodoEvent extends TodoEvent {}
+
+class DeleteTodoEvent extends TodoEvent {
+  final String id;
+  const DeleteTodoEvent(this.id);
+  @override
+  List<Object> get props => [id];
+}
