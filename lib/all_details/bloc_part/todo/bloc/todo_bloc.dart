@@ -8,6 +8,7 @@ part 'todo_state.dart';
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(TodoInitial()) {
     on<FetchTodoEvent>(_onFetchTodos);
+    on<AddTaskEvent>(_onSubmitTodoEvent);
 
     on<TodoEvent>((event, emit) {});
   }
@@ -49,7 +50,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        emit(const TodoSuccess([]));
+        // emit(const TodoSuccess([]));
+        add(FetchTodoEvent());
       } else {
         emit(TodoError(
             'Error: ${response.statusCode} - ${response.reasonPhrase}'));

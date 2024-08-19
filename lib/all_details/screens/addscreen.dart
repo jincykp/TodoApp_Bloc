@@ -31,7 +31,7 @@ class _AddScreenState extends State<AddScreen> {
                   context.read<TodoBloc>().add(AddTaskEvent(
                       title: titleController.text,
                       description: descriptionController.text));
-                  Navigator.pop(context); // Go back to the HomeScreen
+                  Navigator.pop(context);
                 }
               },
               icon: const Icon(

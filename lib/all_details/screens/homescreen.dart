@@ -8,6 +8,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<TodoBloc>().add(FetchTodoEvent());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 65, 44, 82),
@@ -22,7 +23,7 @@ class HomeScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is TodoError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('state.message')),
+              SnackBar(content: Text(state.message)),
             );
           }
         },
@@ -49,8 +50,8 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           } else if (state is TodoError) {
-            return const Center(
-              child: Text('state.message'),
+            return Center(
+              child: Text(state.message),
             );
           }
           return const Center(
