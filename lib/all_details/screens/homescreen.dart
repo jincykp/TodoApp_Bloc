@@ -47,22 +47,25 @@ class HomeScreen extends StatelessWidget {
                       title: Text(task['title']),
                       subtitle: Text(task['description']),
                       trailing: PopupMenuButton<String>(
-                        // onSelected: (value) {
-                        //   if (value == 'edit') {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) => EditScreen(
-                        //                   id: task['_id'],
-                        //                 ))).then((_) {
-                        //       context.read<TodoBloc>().add(FetchTodoEvent());
-                        //     });
-                        //   } else if (value == 'delete') {
-                        //     context
-                        //         .read<TodoBloc>()
-                        //         .add(const DeleteTodoEvent(task['_id']));
-                        //   }
-                        // },
+                        onSelected: (value) {
+                          if (value == 'edit') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditScreen(
+                                          id: task['_id'],
+                                          initialTitle: task['title'],
+                                          initialDescription:
+                                              task['description'],
+                                        ))).then((_) {
+                              context.read<TodoBloc>().add(FetchTodoEvent());
+                            });
+                          } else if (value == 'delete') {
+                            context
+                                .read<TodoBloc>()
+                                .add(DeleteTodoEvent(task['_id']));
+                          }
+                        },
                         itemBuilder: (context) {
                           return [
                             const PopupMenuItem(

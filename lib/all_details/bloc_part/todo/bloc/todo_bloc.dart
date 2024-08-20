@@ -10,6 +10,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<FetchTodoEvent>(_onFetchTodos);
     on<AddTaskEvent>(_onSubmitTodoEvent);
     on<DeleteTodoEvent>(_deleteTodo);
+    on<UpdateTodoEvent>(updateTodo);
+    on<FetchTodoEventById>(onFetchById);
     on<TodoEvent>((event, emit) {});
   }
   Future<void> _onFetchTodos(
@@ -70,6 +72,50 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         add(FetchTodoEvent());
       } else {
         emit(TodoError("Failed to delete todo : ${response.reasonPhrase}"));
+      }
+    } catch (e) {
+      emit(TodoError('An error occured: $e'));
+    }
+  }
+
+  Future<void> onFetchById(
+      FetchTodoEventById event, Emitter<TodoState> emit) async {
+    emit(TodoLoading());
+    final url = 'https://api.nstack.in/v1/todos/${event.id}';
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body) as Map<String, dynamic>;
+        final todoItem = json['data'] as Map<String, dynamic>;
+        emit(TodoSuccessById(todoItem));
+      } else {
+        emit(const TodoError('Failed to load todo'));
+      }
+    } catch (e) {
+      emit(const TodoError('An error occured'));
+    }
+  }
+
+  Future<void> updateTodo(
+      UpdateTodoEvent event, Emitter<TodoState> emit) async {
+    final url = 'https://api.nstack.in/v1/todos/${event.id}';
+    emit(TodoLoading());
+    try {
+      final response = await http.put(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'title': event.title.trim(),
+          'description': event.description.trim(),
+        }),
+      );
+      if (response.statusCode == 200) {
+        add(FetchTodoEvent());
+      } else {
+        emit(TodoError('Failed to delete todo :${response.reasonPhrase}'));
       }
     } catch (e) {
       emit(TodoError('An error occured: $e'));

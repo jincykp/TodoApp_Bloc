@@ -18,7 +18,19 @@ class TodoSuccess extends TodoState {
   List<Object> get props => [items];
 }
 
+class TodoSuccessById extends TodoState {
+  final Map<String, dynamic> todo;
+  const TodoSuccessById(this.todo);
+}
+
 class TodoError extends TodoState {
   final String message;
   const TodoError(this.message);
+}
+
+class TodoUpdateState extends TodoState {
+  final List<Map<String, dynamic>> updatedDetails;
+  const TodoUpdateState(this.updatedDetails);
+  @override
+  List<Object> get props => [updatedDetails];
 }

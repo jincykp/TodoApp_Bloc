@@ -5,12 +5,20 @@ import 'package:todoapp_bloc/all_details/widgets/custom_textformfleds.dart';
 
 class EditScreen extends StatelessWidget {
   final String id;
-  EditScreen({super.key, required this.id});
+  final String initialTitle;
+  final String initialDescription;
+  EditScreen(
+      {super.key,
+      required this.id,
+      required this.initialTitle,
+      required this.initialDescription});
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    titleController.text = initialTitle;
+    descriptionController.text = initialDescription;
     return Scaffold(
       appBar: AppBar(
         // foregroundColor: Colors.white,
@@ -65,7 +73,8 @@ class EditScreen extends StatelessWidget {
                   child: ElevatedButton(
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          context.read<TodoBloc>().add(AddTaskEvent(
+                          context.read<TodoBloc>().add(UpdateTodoEvent(
+                              id: id,
                               title: titleController.text,
                               description: descriptionController.text));
                           Navigator.pop(context);
@@ -74,7 +83,7 @@ class EditScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                           backgroundColor:
                               const Color.fromARGB(255, 136, 104, 143)),
-                      child: const Text("ADD")))
+                      child: const Text("UPDATE")))
             ],
           ),
         ),
