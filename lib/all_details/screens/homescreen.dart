@@ -24,8 +24,11 @@ class HomeScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is TodoError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('updated successfully')),
+              SnackBar(content: Text(state.message)),
             );
+          } else if (state is TodoSuccess && state.isTaskAdded) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Task added Successfully')));
           }
         },
         builder: (context, state) {

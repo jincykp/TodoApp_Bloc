@@ -7,15 +7,15 @@ sealed class TodoEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class FetchTodoEvent extends TodoEvent {}
+
 class AddTaskEvent extends TodoEvent {
   final String title;
   final String description;
-  AddTaskEvent({required this.title, required this.description});
+  const AddTaskEvent({required this.title, required this.description});
   @override
   List<Object> get props => [title, description];
 }
-
-class FetchTodoEvent extends TodoEvent {}
 
 class DeleteTodoEvent extends TodoEvent {
   final String id;

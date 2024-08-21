@@ -13,9 +13,11 @@ class TodoLoading extends TodoState {}
 
 class TodoSuccess extends TodoState {
   final List items;
-  const TodoSuccess(this.items);
+  final bool isTaskAdded; // Add a flag to indicate if a task was added
+
+  const TodoSuccess(this.items, {this.isTaskAdded = false}); // Default is false
   @override
-  List<Object> get props => [items];
+  List<Object> get props => [items, isTaskAdded];
 }
 
 class TodoSuccessById extends TodoState {

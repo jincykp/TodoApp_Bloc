@@ -8,7 +8,7 @@ part 'todo_state.dart';
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(TodoInitial()) {
     on<FetchTodoEvent>(_onFetchTodos);
-    on<AddTaskEvent>(_onSubmitTodoEvent);
+    on<AddTaskEvent>(_onSubmitTodo);
     on<DeleteTodoEvent>(_deleteTodo);
     on<UpdateTodoEvent>(updateTodo);
     on<FetchTodoEventById>(onFetchById);
@@ -35,7 +35,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     }
   }
 
-  Future<void> _onSubmitTodoEvent(
+  Future<void> _onSubmitTodo(
       AddTaskEvent event, Emitter<TodoState> emit) async {
     emit(TodoLoading());
     final body = {
@@ -51,7 +51,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        emit(const TodoSuccess([]));
+        emit(const TodoSuccess([], isTaskAdded: true)); // Set flag to true
         add(FetchTodoEvent());
       } else {
         emit(TodoError(
